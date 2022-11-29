@@ -1,0 +1,70 @@
+grammar WeebQueue;
+
+prog: stmts EOF;
+
+stmts: stmt+;
+
+stmt:  create = createQueue '.' NEWLINE
+| basicQueueOptions = queueOptions '.' NEWLINE
+| printOptions = printQueueOptions '.' NEWLINE
+| booleanQueueOptions = booleanQueue '?' NEWLINE
+| miscQueueOptions = miscQueue '.' NEWLINE
+;
+
+createQueue:
+'Create' '[' queueName = ID ']' '[' queueSize = INT ']'
+;
+
+queueOptions:
+enqueue = enqueueOptions
+|remove = dequeue '[' queueName = ID ']'
+|erase = clear '[' queueName = ID ']'
+;
+
+enqueueOptions:
+'Enqueue' '[' queueName = ID ']' '[' elements = INT ']' '[' priority = INT']'
+| 'Enqueue' '[' queueName = ID ']' '[' elements = ID ']' '[' priority = INT']'
+| 'Enqueue' '[' queueName = ID ']' '[' elements = TWITTERHANDLE ']' '[' priority = INT']'
+| 'Enqueue' '[' queueName = ID ']' '[' elements = IP ']' '[' priority = INT']'
+|| 'Enqueue' '[' queueName = ID ']' '[' elements = DISCORD ']' '[' priority = INT']'
+;
+
+dequeue: 'Dequeue';
+
+clear: 'Clear';
+
+printQueueOptions:
+'Print' 'queue' '[' queueName = ID ']'
+|'Print' 'element' 'from' '[' queueName = ID ']' 'with' 'prioirty' '[' priority = ID ']'
+|'Print' 'head' '[' queueName = ID ']'
+|'Print' 'tail' '[' queueName = ID ']'
+;
+
+booleanQueue:
+'Is' '[' queueName = ID ']' function=fn '?'
+| 'Is' '[' elementName = ID ']' 'inside' '[' queueName = ID ']'
+;
+
+miscQueue:
+swappa = swap 'queue' '[' queueName = ID ']' 'with' '[' queueName = ID ']'
+| combinatory = combine 'queues' '[' queueName = ID ']' '[' queueName = ID ']'
+| noU = reverse 'queue' '[' queueName = ID ']'
+;
+
+swap: 'Swap';
+combine: 'Combine';
+reverse: 'Reverse';
+
+fn:
+'full'
+|'empty'
+|'populated'
+;
+
+NEWLINE : [\r\n]+ ;
+INT: [0-9]+ ;
+ID: [a-zA-Z_0-9]+ ;
+TWITTERHANDLE:'@'[A-Za-z0-9]+;
+IP:[0-9][0-9]'.'[0-9][0-9][0-9]'.'[0-9][0-9][0-9]'.'[0-9][0-9];
+DISCORD: [a-zA-Z_0-9 ]+'#'[0-9][0-9][0-9][0-9];
+WS: [ \t\n\r\f]+ -> channel(HIDDEN) ;
