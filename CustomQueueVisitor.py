@@ -25,15 +25,20 @@ class CustomQueueVisitor(QueueVisitor):
         else:
             if self.variables[var].isEmpty():
                 self.variables[var].insert(obj(ctx.elements.text, ctx.priority.text))
+                print(ctx.elements.text + " has been added to queue " + var)
             else:
                 if self.variables[var].queue[0].value.find('@') != -1 and ctx.elements.text.find('@') != -1:
                     self.variables[var].insert(obj(ctx.elements.text, ctx.priority.text))
+                    print(ctx.elements.text + " has been added to queue " + var)
                 elif self.variables[var].queue[0].value.find('#') != -1 and ctx.elements.text.find('#') != -1:
-                    self.variables[var].insert(obj(ctx.elements.text, ctx.priority.text))
+                    print(ctx.elements.text + " has been added to queue " + var)
+                    print(ctx.elements.text + " has been added with priority " + ctx.priority.text)
                 elif self.variables[var].queue[0].value.find('.') != -1 and ctx.elements.text.find('.') != -1:
                     self.variables[var].insert(obj(ctx.elements.text, ctx.priority.text))
+                    print(ctx.elements.text + " has been added to queue " + var)
                 elif self.variables[var].queue[0].value.find('*') != -1 and ctx.elements.text.find('*') != -1:
                     self.variables[var].insert(obj(ctx.elements.text, ctx.priority.text))
+                    print(ctx.elements.text + " has been added to queue " + var)
                 else:
                     print("Error: Wrong datatype for " + var)
 
@@ -59,6 +64,7 @@ class CustomQueueVisitor(QueueVisitor):
         if var not in self.variables:
             print("Error: No queue exists for " + var + " to print")
         else:
+            print("Printing elements from: " + var)
             self.variables[var].printQueue()
 
     def visitElemental(self, ctx:QueueParser.ElementalContext):
@@ -114,6 +120,8 @@ class CustomQueueVisitor(QueueVisitor):
         varTwo = str(ctx.queueNameTwo.text)
         if varOne not in self.variables or varTwo not in self.variables:
             print("Error: No queue exists for one of the two variables to combine")
+        elif varOne == varTwo:
+            print("Error: queue cannot combine itself")
         else:
             if self.variables[varOne].queue[0].value.find('@') != -1 and \
                     self.variables[varTwo].queue[0].value.find('@') != -1:
@@ -135,8 +143,11 @@ class CustomQueueVisitor(QueueVisitor):
         varTwo = str(ctx.queueNameTwo.text)
         if varOne not in self.variables or varTwo not in self.variables:
             print("Error: No queue exists for one of the two variables to swap")
+        elif varOne == varTwo:
+            print("Error: queue cannot swap contents with itself")
         else:
             self.variables[varOne].swap(self.variables[varTwo])
+            print("All contents from " + varOne + " " + varTwo + " has been swapped")
 
     def visitReverse(self, ctx:QueueParser.ReverseContext):
         var = str(ctx.queueName.text)

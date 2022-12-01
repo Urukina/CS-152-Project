@@ -26,6 +26,8 @@ class PriorityQueue(object):
         return len(self.queue) == 0
 
     def insert(self, data):
+        if len(self.queue) >= self.size:
+            print("Cannot enter any more data because queue is full")
         if len(self.queue) < self.size:
             if len(self.queue) > 0:
                 for i in range(len(self.queue)):
@@ -34,6 +36,7 @@ class PriorityQueue(object):
                     if data.priority == self.queue[i].priority:
                         data.priority += 1
             self.queue.append(data)
+
 
     def delete(self):
         try:
@@ -63,6 +66,7 @@ class PriorityQueue(object):
         self.sort()
         for i in range(len(self.queue)):
             self.queue[i].printValue()
+        print("All elements have been printed")
 
     def printHead(self):
         maxVal = self.queue[0]
